@@ -11,6 +11,14 @@ function print(text) {
  */
 function isValid(name) {
   // ваш код...
+  // Хотел сделать всё в одно условие, но если name === null , то при name.length вылезет ошибка
+  if (name === null) {
+    return false
+  } else if (name.length < 4 || name.includes(' ')) {
+    return false
+  } else {
+    return true
+  }
 }
 
 function sayHello() {
