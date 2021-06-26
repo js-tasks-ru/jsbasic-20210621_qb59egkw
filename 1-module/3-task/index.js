@@ -1,8 +1,11 @@
 function ucFirst(str) {
-  if (!str) {
-    return str.toUpperCase()
-  } else {
-    str = str[0].toUpperCase() + str.slice(1)
-    return str
-  }
+  let result = str
+
+  if (!result) {
+    return result.toUpperCase()
+  } 
+  
+  result = result[0].toUpperCase() + result.slice(1)
+  return result
+  
 }

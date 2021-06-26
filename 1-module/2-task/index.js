@@ -16,9 +16,10 @@ function isValid(name) {
     return false
   } else if (name.length < 4 || name.includes(' ')) {
     return false
-  } else {
-    return true
   }
+
+  return true
+  
 }
 
 function sayHello() {
