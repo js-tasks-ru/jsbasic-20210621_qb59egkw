@@ -3,9 +3,8 @@ function sumSalary(salaries) {
   // NaN исключается при сравнении 
 
   let sumSalaryResult = 0
-
   for (let key in salaries) {
-    if (salaries[key] != Infinity && salaries[key] != -Infinity && salaries[key] > 0 ) {
+    if (Number.isFinite(salaries[key])) {
       sumSalaryResult += salaries[key]
     }
   }
