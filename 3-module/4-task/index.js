@@ -1,11 +1,10 @@
 function showSalary(users, age) {
   // ваш код...
-  let salarysAndNames = []
   
-  users.forEach(user => {
-    user.age <= age ? salarysAndNames.push(`${user.name}, ${user.balance}`) : undefined
-  });
+  const salarysAndNames = users.filter(user => user.age <= age)
+                                  .map(user => { return `${user.name}, ${user.balance}` })
+                                  .join('\n')
 
-  return salarysAndNames.join('\n')
+  return salarysAndNames
 
 }
