@@ -13,7 +13,6 @@ function initCarousel() {
     carouselInnerWidth += carouselInner.offsetWidth 
     carouselInner.style.transform = `translateX(-${carouselInnerWidth}px)`
     checkingVisibilityArrows()
-
   } 
 
   const functionButtonArrowLeft = () => {
@@ -38,5 +37,4 @@ function initCarousel() {
   buttonArrowLeft.addEventListener('click', functionButtonArrowLeft)
 
   checkingVisibilityArrows()
-
 }
