@@ -14,15 +14,16 @@
  */
 export default class UserTable {
   constructor(rows) {
-    this._rows = [...rows]  
-    this._table = document.createElement('table')
-    this._table.innerHTML = this._renderTable()
-    this._onButtonClick()
+    this.rows = [...rows] 
+
+    this.table = document.createElement('table')
+
+    this.table.innerHTML = this.renderTable()
+    this.removeThisLineElement()
   }
 
   
-
-  _renderTable() {
+  renderTable() {
     return `
     <table>
       <thead>
@@ -35,7 +36,7 @@ export default class UserTable {
           </tr>
       </thead>
       <tbody>
-        ${this._rows.map(row => `
+        ${this.rows.map(row => `
             <tr>
               <td>${row.name}</td>
               <td>${row.age}</td>
@@ -50,8 +51,8 @@ export default class UserTable {
     `
   }
 
-  _onButtonClick() {
-    this._table.querySelectorAll('button').forEach((e) => {
+  removeThisLineElement() {
+    this.table.querySelectorAll('button').forEach((e) => {
       e.addEventListener('click', (event) => {
         return event.currentTarget.parentElement.parentElement.remove()
       }, { once : true })
@@ -59,6 +60,6 @@ export default class UserTable {
   }
 
   get elem() {
-    return this._table
+    return this.table
   }
 }

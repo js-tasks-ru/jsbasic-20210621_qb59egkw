@@ -4,74 +4,36 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
 
-    this._carouselSlider = null
-    this._leftArrow = null
-    this._rightArrow = null
-    this._carouselInnerWidth = 0
+    this.carousel = null
+    this.carouselSlider = null
+    this.leftArrow = null
+    this.rightArrow = null
+    this.btnsSliderProductAdd = null
+    
+    this.carouselInnerWidth = 0
+    this.maxSliderWith = null
 
-    this._carousel = document.createElement('div')
-    this._carousel.classList.add('carousel')
-
-    this._render() 
-    this.elem = this._carousel
+    this.render() 
   }
   
     
-  _render() {
-    this._carousel.innerHTML = this._renderCarousel()
+  render() {
+    this.carousel = createElement(
+      `
+        <div class="carousel">
+          ${this.renderCarousel()}
+        </div>
+      `
+    )
+    this.renderCarouselElements()
 
-    this._carouselSlider = this._carousel.querySelector('.carousel__inner')
-    this._leftArrow = this._carousel.querySelector('.carousel__arrow_left')
-    this._rightArrow = this._carousel.querySelector('.carousel__arrow_right')
-    
-    this._checkingVisibilityArrows()
-    this._arrowSlider()
-    this._eventBtnAdd() 
+    this.checkMaxWidthVivsibilityArrowAndMoveSlider()
+    this.arrowsSliderEvents()
+    this.onclickEventProductAdd() 
   } 
 
-  _eventBtnAdd() {
-    this._buttonProductAdd = [...this._carousel.querySelectorAll('.carousel__button')]
-      this._buttonProductAdd.map((element, index) => {
-        element.addEventListener('click', () => {
-          this._carousel.dispatchEvent(
-            new CustomEvent('product-add', {
-              detail: this.slides[index].id,
-              bubbles: true
-        }))
-      })
-    })
-  }
-
-  _arrowSlider() {
-    this._leftArrow.onclick = () => {
-      this._maxSliderWith = this._carouselSlider.offsetWidth * (this.slides.length - 1)
-      this._carouselInnerWidth -= this._carouselSlider.offsetWidth
-      this._carouselSlider.style.transform = `translateX(-${this._carouselInnerWidth}px)`
-      this._checkingVisibilityArrows()
-    }
-    
-    this._rightArrow.onclick = () => {
-      this._maxSliderWith = this._carouselSlider.offsetWidth * (this.slides.length - 1)
-      this._carouselInnerWidth += this._carouselSlider.offsetWidth
-      this._carouselSlider.style.transform = `translateX(-${this._carouselInnerWidth}px)`
-      this._checkingVisibilityArrows()
-    }
-  }
-
-  _checkingVisibilityArrows() {
-      if (this._carouselInnerWidth <= 0) {
-        this._leftArrow.style.display = 'none'        
-      } else if (this._carouselInnerWidth >= this._maxSliderWith) {
-        this._rightArrow.style.display = 'none'    
-      } else {
-        this._leftArrow.style.display = ''
-        this._rightArrow.style.display = '' 
-      }
-  }
-
-  _renderCarousel() {
+  renderCarousel() {
     return `
-    <div class="carousel">
       <div class="carousel__arrow carousel__arrow_right">
         <img src="/assets/images/icons/angle-icon.svg" alt="icon">
       </div>
@@ -94,7 +56,63 @@ export default class Carousel {
           </div>`
         }).join('')}
       </div>
-    </div>
     `
+  }
+
+  renderCarouselElements() {
+    this.carouselSlider = this.carousel.querySelector('.carousel__inner')
+    this.leftArrow = this.carousel.querySelector('.carousel__arrow_left')
+    this.rightArrow = this.carousel.querySelector('.carousel__arrow_right')
+    this.btnsSliderProductAdd = [...this.carousel.querySelectorAll('.carousel__button')]
+  }
+
+  checkMaxWidthVivsibilityArrowAndMoveSlider() {
+    this.maxSliderWith = this.carouselSlider.offsetWidth * (this.slides.length - 1)
+    this.carouselSlider.style.transform = `translateX(-${this.carouselInnerWidth}px)`
+    this.checkingVisibilityArrows()
+  }
+
+  checkingVisibilityArrows() {
+    if (!this.carouselInnerWidth) {
+      this.leftArrow.style.display = 'none'        
+    } else if (this.carouselInnerWidth >= this.maxSliderWith) {
+      this.rightArrow.style.display = 'none'    
+    } else {
+      this.leftArrow.style.display = ''
+      this.rightArrow.style.display = '' 
+    }
+  }
+
+  arrowsSliderEvents() {
+    this.leftArrow.onclick = () => {
+      this.carouselInnerWidth -= this.carouselSlider.offsetWidth
+      this.checkMaxWidthVivsibilityArrowAndMoveSlider()
+    }
+    
+    this.rightArrow.onclick = () => {
+      this.carouselInnerWidth += this.carouselSlider.offsetWidth
+      this.checkMaxWidthVivsibilityArrowAndMoveSlider()
+    }
+  }
+
+  eventProductAdd(el, index) {
+    return el.addEventListener('click', () => {
+      this.carousel.dispatchEvent(
+        new CustomEvent('product-add', {
+          detail: this.slides[index].id,
+          bubbles: true
+        })
+      )
+    })
+  }
+
+  onclickEventProductAdd() {
+    this.btnsSliderProductAdd.forEach((element, index) => {
+      this.eventProductAdd(element, index)
+    })
+  }
+
+  get elem() {
+    return this.carousel
   }
 }
